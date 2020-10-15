@@ -6,13 +6,14 @@ Rock Paper Scissors Game!
 Your documentation should go here
 """
 import tkinter as tk
+import math
+import random
 
 def main():
   def startGame():
-    titleScreen["text"] = "Rock Paper Scissors!"
     titleButton.pack_forget()
     tutorialButton.pack_forget()
-    turn()
+    render()
 
   def openTutorial():
     tutorial.pack()
@@ -28,17 +29,60 @@ def main():
     titleButton.pack()
     tutorialButton.pack()
 
-  def turn():
+  def turn(x):
+    y = math.ceil(random.randint(1,3))
+    switcher = {
+      1: "Rock",
+      2: "Paper",
+      3: "Scissors"
+    }
+    rock.pack_forget()
+    paper.pack_forget()
+    scissors.pack_forget()
+    titleScreen["text"] = "Computer: " + switcher.get(y)
+    yourPick.pack()
+    yourPick["text"] = "You: " + x
+    continueButton.pack()
+    if x == "rock":
+      if y == 1:
+        z = "Tie"
+      elif y == 2:
+        z = "Lose"
+      elif y == 3:
+        z = "Win"
+    elif x == "paper":
+      if y == 1:
+        z = "Win"
+      elif y == 2:
+        z = "Tie"
+      elif y == 3:
+        z = "Lose"
+    elif x == "scissors":
+      if y == 1:
+        z = "Lose"
+      elif y == 2:
+        z = "Win"
+      elif y == 3:
+        z = "Tie"
+    continueButton["text"] = z
+
+  def nextTurn():
+    render()
+    continueButton.pack_forget()
+    yourPick.pack_forget()
+
+  def render():
     rock.pack()
     paper.pack()
     scissors.pack()
+    titleScreen["text"] = "Rock Paper Scissors!"
 
   def rock():
-    pass
+    turn("rock")
   def paper():
-    pass
+    turn("paper")
   def scissors():
-    pass
+    turn("scissors")
 
   main = tk.Tk()
   main.geometry("500x500")
@@ -73,7 +117,16 @@ def main():
     text = "SCISSORS",
     command = scissors
   )
-  
+  yourPick = tk.Label(
+    text=""
+  )
+  continueButton = tk.Button(
+    text = "",
+    command = nextTurn
+  )
+  stats = tk.Label(
+    text = "|Games played: |Wins: |Losses: |Ties|"
+  )
 
   titleScreen.pack()
   titleButton.pack()
